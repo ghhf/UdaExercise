@@ -1,11 +1,13 @@
 package cn.happy.miwork;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+
+import cn.happy.miwork.adapter.MyFragmentPagerAdapter;
 
 /**
  * Interface List是个接口，所有的方法都没有实现
@@ -16,46 +18,56 @@ import androidx.appcompat.app.AppCompatActivity;
  * E 可被替换为任何非原始类型数据。
  *
  * Async Callback 异步回调， 让应用中的组件执行某个操作，当完成式通知回来，应用其他操作不被影响。
+ *
+ * TabLayout https://guides.codepath.com/android/google-play-style-tabs-using-tablayout#styling-the-tablayout
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
-    private TextView NumbersTV,ColorsTV,FamilyTV,PhrasesTV;
+//    private TextView NumbersTV,ColorsTV,FamilyTV,PhrasesTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NumbersTV = findViewById(R.id.numbers);
-        ColorsTV = findViewById(R.id.colors);
-        FamilyTV = findViewById(R.id.family);
-        PhrasesTV = findViewById(R.id.phrases);
+        ViewPager viewPager = findViewById(R.id.main_viewpager);
+        MyFragmentPagerAdapter vpAdapter = new MyFragmentPagerAdapter(this,getSupportFragmentManager());
+        viewPager.setAdapter(vpAdapter);
 
-        NumbersTV.setOnClickListener(this);
-        ColorsTV.setOnClickListener(this);
-        FamilyTV.setOnClickListener(this);
-        PhrasesTV.setOnClickListener(this);
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+//        NumbersTV = findViewById(R.id.numbers);
+//        ColorsTV = findViewById(R.id.colors);
+//        FamilyTV = findViewById(R.id.family);
+//        PhrasesTV = findViewById(R.id.phrases);
+//
+//        NumbersTV.setOnClickListener(this);
+//        ColorsTV.setOnClickListener(this);
+//        FamilyTV.setOnClickListener(this);
+//        PhrasesTV.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.numbers:
-                Intent numbersIntent = new Intent(MainActivity.this,NumbersActivity.class);
-                startActivity(numbersIntent);
-                break;
-            case R.id.colors:
-                Intent colorsIntent = new Intent(MainActivity.this,ColorsActivity.class);
-                startActivity(colorsIntent);
-                break;
-            case R.id.family:
-                Intent familyIntent = new Intent(MainActivity.this,FamilyActivity.class);
-                startActivity(familyIntent);
-                break;
-            case R.id.phrases:
-                Intent phrasesIntent = new Intent(MainActivity.this,PhrasesActivity.class);
-                startActivity(phrasesIntent);
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()){
+//            case R.id.numbers:
+//                Intent numbersIntent = new Intent(MainActivity.this,NumbersActivity.class);
+//                startActivity(numbersIntent);
+//                break;
+//            case R.id.colors:
+//                Intent colorsIntent = new Intent(MainActivity.this,ColorsActivity.class);
+//                startActivity(colorsIntent);
+//                break;
+//            case R.id.family:
+//                Intent familyIntent = new Intent(MainActivity.this,FamilyActivity.class);
+//                startActivity(familyIntent);
+//                break;
+//            case R.id.phrases:
+//                Intent phrasesIntent = new Intent(MainActivity.this,PhrasesActivity.class);
+//                startActivity(phrasesIntent);
+//                break;
+//        }
+//    }
 }

@@ -3,56 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/tan_background"
+    android:background="@color/primary_color"
     tools:context=".MainActivity">
+<com.google.android.material.tabs.TabLayout
+    android:id="@+id/sliding_tabs"
+    style="@style/MyCustomTabLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:tabMode="fixed"/>
 
-    <!-- Numbers category -->
-    <FrameLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_numbers">
-        <TextView
-            android:id="@+id/numbers"
-            style="@style/CategoryStyle"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/category_numbers" />
-    </FrameLayout>
+        android:layout_height="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
+    <!-- Numbers category -->
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/category_numbers">-->
+<!--        <TextView-->
+<!--            android:id="@+id/numbers"-->
+<!--            style="@style/CategoryStyle"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:text="@string/category_numbers" />-->
+<!--    </FrameLayout>-->
 
     <!-- Family category -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_family">
-        <TextView
-            android:id="@+id/family"
-            style="@style/CategoryStyle"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/category_family" />
-    </FrameLayout>
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/category_family">-->
+<!--        <TextView-->
+<!--            android:id="@+id/family"-->
+<!--            style="@style/CategoryStyle"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:text="@string/category_family" />-->
+<!--    </FrameLayout>-->
 
     <!-- Colors category -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_colors">
-        <TextView
-            android:id="@+id/colors"
-            style="@style/CategoryStyle"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/category_colors" />
-    </FrameLayout>
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/category_colors">-->
+<!--        <TextView-->
+<!--            android:id="@+id/colors"-->
+<!--            style="@style/CategoryStyle"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:text="@string/category_colors" />-->
+<!--    </FrameLayout>-->
 
     <!-- Phrases category -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_phrases">
-        <TextView
-            android:id="@+id/phrases"
-            style="@style/CategoryStyle"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/category_phrases" />
-    </FrameLayout>
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/category_phrases">-->
+<!--        <TextView-->
+<!--            android:id="@+id/phrases"-->
+<!--            style="@style/CategoryStyle"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:text="@string/category_phrases" />-->
+<!--    </FrameLayout>-->
 
 </LinearLayout>
