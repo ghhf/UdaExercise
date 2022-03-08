@@ -62,6 +62,9 @@ public class PetProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
+        // 数据发生变化通知监听器
+        cursor.setNotificationUri(getContext().getContentResolver(),uri);
+
         return cursor;
     }
 
@@ -129,6 +132,9 @@ public class PetProvider extends ContentProvider {
             Log.e(LOG_TAG,"Failed to insert row for " + uri);
             return null;
         }
+        // 通知监听器 数据发生了变化
+        getContext().getContentResolver().notifyChange(uri,null);
+
         return ContentUris.withAppendedId(uri,id);
     }
 
@@ -137,14 +143,26 @@ public class PetProvider extends ContentProvider {
         // DELETE pets WHERE breed= ‘Calico’
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
+        int deleteResult ;
+
         final int match = sUriMatcher.match(uri);
         switch (match){
             case PETS:
-                return database.delete(PetContract.PetEntry.TABLE_NAME,selection,selectionArgs);
+                deleteResult = database.delete(PetContract.PetEntry.TABLE_NAME,selection,selectionArgs);
+                if(deleteResult != 0){
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return deleteResult;
             case PET_ID:
                 selection = PetContract.PetEntry._ID + "+=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return database.delete(PetContract.PetEntry.TABLE_NAME,selection,selectionArgs);
+
+                deleteResult = database.delete(PetContract.PetEntry.TABLE_NAME,selection,selectionArgs);
+                if(deleteResult != 0){
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return deleteResult;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
@@ -154,16 +172,28 @@ public class PetProvider extends ContentProvider {
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         // UPDATE pets SET name = ‘Milo’, breed=’French bulldog’, weight=20 WHERE name=‘Toto’
         final int match = sUriMatcher.match(uri);
+        int updateResult ;
         switch (match){
             case PETS:
-                return updatePet(uri,values,selection,selectionArgs);
+                updateResult = updatePet(uri,values,selection,selectionArgs);
+                if (updateResult != 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return updateResult;
             case PET_ID:
                 selection = PetContract.PetEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return updatePet(uri,values,selection,selectionArgs);
+                updateResult = updatePet(uri,values,selection,selectionArgs);
+
+                if (updateResult != 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return updateResult;
+
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
         }
+
     }
 
     private int updatePet(Uri uri, ContentValues contentValues,String selection,String[] selectionArgs){
@@ -196,6 +226,8 @@ public class PetProvider extends ContentProvider {
 
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+
         return database.update(PetContract.PetEntry.TABLE_NAME,contentValues,selection,selectionArgs);
 
     }

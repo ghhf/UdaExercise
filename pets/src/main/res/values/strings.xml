@@ -21,6 +21,7 @@
 
     <!-- Title for the activity to add a new pet [CHAR LIMIT=20] -->
     <string name="editor_activity_title_new_pet">Add a Pet</string>
+    <string name="editor_activity_title_update_pet">Edit a Pet</string>
 
     <!-- Label for editor menu option to save pet and leave editor [CHAR LIMIT=20] -->
     <string name="action_save">Save</string>
@@ -61,6 +62,16 @@
     <string name="editor_insert_pet_failed">新增宠物失败</string>
     <string name="editor_insert_pet_successful">新增宠物成功</string>
 
+    <string name="editor_update_pet_failed">更新宠物失败</string>
+    <string name="editor_update_pet_successful">更新宠物成功</string>
+
     <string name="empty_view_title_text">It\'s a bit lonely here...</string>
     <string name="empty_view_subtitle_text">Get started by adding a pet</string>
+
+    <string name="unsaved_changes_dialog_msg">确认放弃你所做的修改？</string>
+    <string name="discard">放弃</string>
+    <string name="keep_editing">继续编辑</string>
+
+    <string name="editor_delete_pet_failed">失败删除</string>
+    <string name="editor_delete_pet_successful">成功删除</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.happy.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,19 +10,27 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.happy.pets.data.PetContract;
 import com.happy.pets.data.PetDbHelper;
 
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "CatalogActivity";
-    private PetDbHelper mDbHelper;
+    private static final int PET_LOADER = 0;
+    private PetCursorAdapter mCursorAdapter;
 
+    private PetDbHelper mDbHelper;
     private ListView listView;
 
     @Override
@@ -40,8 +49,26 @@ public class CatalogActivity extends AppCompatActivity {
         });
 
         listView = findViewById(R.id.catalog_list);
-        mDbHelper = new PetDbHelper(this);
-        displayDatabaseInfo();
+
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
+
+        mCursorAdapter = new PetCursorAdapter(this,null,false);
+        listView.setAdapter(mCursorAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(CatalogActivity.this,EditorActivity.class);
+                Uri currentPetUri = ContentUris.withAppendedId(PetContract.CONTENT_URI,id);
+                intent.setData(currentPetUri);
+                startActivity(intent);
+            }
+        });
+
+//        mDbHelper = new PetDbHelper(this);
+//        displayDatabaseInfo();
+//        getLoaderManager().initLoader(PET_LOADER,null, this);
+        LoaderManager.getInstance(this).initLoader(PET_LOADER,null,this);
     }
 
     @Override
@@ -71,6 +98,7 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 // Do nothing for now
+                deleteAllPet();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -92,6 +120,10 @@ public class CatalogActivity extends AppCompatActivity {
 
         Log.w(TAG,"New row  " + newUri);
 
+    }
+
+    private void deleteAllPet(){
+        int rowsDeleted = getContentResolver().delete(PetContract.CONTENT_URI, null, null);
     }
 
     private void displayDatabaseInfo(){
@@ -118,6 +150,7 @@ public class CatalogActivity extends AppCompatActivity {
 
         PetCursorAdapter adapter = new PetCursorAdapter(this,cursor,true);
         listView.setAdapter(adapter);
+
 
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
@@ -157,5 +190,39 @@ public class CatalogActivity extends AppCompatActivity {
 //            c.close();
 //        }
 
+    }
+
+    /**
+     * 在后台线程运行 执行 Content Provider 的 query 方法
+     * @param id
+     * @param args
+     * @return
+     */
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+
+        String[] projection = {
+                PetContract.PetEntry._ID,
+                PetContract.PetEntry.COLUMN_PET_BREED,
+                PetContract.PetEntry.COLUMN_PET_NAME,
+                PetContract.PetEntry.COLUMN_PET_WEIGHT};
+
+        return new CursorLoader(this,
+                PetContract.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
     }
 }

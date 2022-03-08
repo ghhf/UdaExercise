@@ -2,6 +2,7 @@ package com.happy.pets;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,11 @@ public class PetCursorAdapter extends CursorAdapter {
         int summaryColumnIndex = cursor.getColumnIndex(PetContract.PetEntry.COLUMN_PET_BREED);
 
         String petName = cursor.getString(nameColumnIndex);
-        String petBreed = cursor.getColumnName(summaryColumnIndex);
+        String petBreed = cursor.getString(summaryColumnIndex);
+
+        if (TextUtils.isEmpty(petBreed)) {
+            petBreed = "未知品种";
+        }
 
         tvName.setText(petName);
         tvSummary.setText(petBreed);

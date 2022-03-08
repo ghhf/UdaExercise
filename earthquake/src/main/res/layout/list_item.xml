@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/magnitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        tools:text="5.1"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/circle"/>
+
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_toEndOf="@id/magnitude"
+       android:orientation="vertical"
+       android:layout_toRightOf="@id/magnitude">
+       <TextView
+           android:id="@+id/distance"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginEnd="20dp"
+           tools:text="50km"
+           android:layout_marginRight="20dp" />
+
+       <TextView
+           android:id="@+id/location"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textStyle="bold"
+           tools:text="San Fri"/>
+   </LinearLayout>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        tools:text="Mar 6, 2021"
+        android:layout_alignParentRight="true" />
+</RelativeLayout>
