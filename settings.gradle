@@ -1,3 +1,4 @@
+include ':sunshine'
 include ':earthquake'
 include ':pets'
 include ':app', ':miwork'
