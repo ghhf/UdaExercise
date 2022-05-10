@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/earthquake" />
             <option value="$PROJECT_DIR$/miwork" />
             <option value="$PROJECT_DIR$/pets" />
+            <option value="$PROJECT_DIR$/sunshine" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
