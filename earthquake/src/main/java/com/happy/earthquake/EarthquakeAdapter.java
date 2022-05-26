@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,18 +49,18 @@ public class EarthquakeAdapter extends BaseAdapter {
 
         EarthQuake curEarthQuake = (EarthQuake) getItem(position);
 
+        /**
+         * float 32位。如需在大型浮点数数组中节内存，请使用 float 而不是 double，此类型绝不用于精确值，如货币 可使用 BigDecimal
+         * double 64位，对于十进制此数据类型通常是默认选择，此类型绝不用于精确值，如货币 可使用 BigDecimal
+         */
+
         TextView tvMagnitude = listItemView.findViewById(R.id.magnitude);
-        double magnitude = curEarthQuake.getMag();
+        tvMagnitude.setText(formatMagnitude(curEarthQuake.getMag()));
 
         GradientDrawable magnitudeCircle = (GradientDrawable) tvMagnitude.getBackground();
         int magnitudeColor = getMagnitudeColor(curEarthQuake.getMag());
         magnitudeCircle.setColor(magnitudeColor);
 
-        tvMagnitude.setText(String.valueOf(curEarthQuake.getMag()));
-
-        // 0 表示数字的占位符、# 也表示 数字，但是不显示前导零
-//        DecimalFormat formatter = new DecimalFormat("0.00");
-//        String output = formatter.format(2.3234);
 
         String place = curEarthQuake.getTitle();
 
@@ -67,7 +68,7 @@ public class EarthquakeAdapter extends BaseAdapter {
         String location = place;
         String distance = "";
         if(ofIdx>0){
-             location = place.substring(ofIdx+2,place.length()-1);
+            location = place.substring(ofIdx+2,place.length()-1);
             distance = place.substring(0,ofIdx);
         }
         TextView tvDistance = listItemView.findViewById(R.id.distance);
@@ -83,10 +84,17 @@ public class EarthquakeAdapter extends BaseAdapter {
 
     private static String longTime2Date(long milliSeconds){
         Date dateObject = new Date(milliSeconds);
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+        // 格式 Mar 3,1984
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("LLL dd, yyyy");
         return dateFormatter.format(dateObject);
     }
 
+    private String formatMagnitude(double magnitude){
+        // 0 表示数字的占位符、# 也表示 数字，但是不显示前导零
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");
+        return decimalFormat.format(magnitude);
+
+    }
     private int getMagnitudeColor(double magnitude){
         int magnitudeColorResId = R.color.magnitude1;
         int magnitudeFloor = (int) Math.floor(magnitude);

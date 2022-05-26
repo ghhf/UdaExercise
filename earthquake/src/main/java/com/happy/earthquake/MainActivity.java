@@ -20,10 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
+ * JSON 解析
+ *
  * List ArrayList 区别：
  *  List 是接口
  *  ArrayList 是具体的类
@@ -190,48 +193,49 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter.clear();
     }
 
-
     /**
      * AsyncTask 用于后台线程执行网络请求
      * param 进度 返回值
      */
-//    private class EarthquakeAsyncTask extends AsyncTask<String,Void,EarthQuake>{
-//        // 获取数据
-//        @Override
-//        protected EarthQuake doInBackground(String... strings) {
-//            if(strings.length < 1 || strings[0] == null){
-//                return null;
-//            }
-//
-//            EarthQuake earthQuake = Utils.fetchEarthquakeData(strings[0]);
-//            return earthQuake;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(EarthQuake earthQuake) {
-//            if(earthQuake == null){
-//                return ;
-//            }
-//            // gengxinUI
-////           updateUi(earthQuake);
-//        }
-//    }
-    private class EarthquakeAsyncTask extends AsyncTask<String,Void, List<EarthQuake>>{
+    private class EarthquakeAsyncTask extends AsyncTask<String,Void,EarthQuake>{
         // 获取数据
         @Override
-        protected List<EarthQuake> doInBackground(String... strings) {
+        protected EarthQuake doInBackground(String... strings) {
             if(strings.length < 1 || strings[0] == null){
                 return null;
             }
 
-           return Utils.fetchEarthquakeList(strings[0]);
+            EarthQuake earthQuake = Utils.fetchEarthquakeData(strings[0]);
+            return earthQuake;
         }
 
         @Override
-        protected void onPostExecute(List<EarthQuake> earthQuakes) {
+        protected void onPostExecute(EarthQuake earthQuake) {
+            if(earthQuake == null){
+                return ;
+            }
             // gengxinUI
-           updateUi(earthQuakes);
+            List<EarthQuake> list = new ArrayList<>();
+            list.add(earthQuake);
+           updateUi(list);
         }
     }
+//    private class EarthquakeAsyncTask extends AsyncTask<String,Void, List<EarthQuake>>{
+        // 获取数据
+//        @Override
+//        protected List<EarthQuake> doInBackground(String... strings) {
+//            if(strings.length < 1 || strings[0] == null){
+//                return null;
+//            }
+//
+//           return Utils.fetchEarthquakeList(strings[0]);
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<EarthQuake> earthQuakes) {
+//            // gengxinUI
+//           updateUi(earthQuakes);
+//        }
+//    }
 
 }
